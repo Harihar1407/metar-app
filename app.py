@@ -89,7 +89,42 @@ if st.button("Get METAR"):
                 data = metar[0]
 
                 st.success("METAR Retrieved Successfully!")
+                st.subheader("📋 METAR Summary")
 
+                wind = f"{data.get('wdir', 'VRB')}° @ {data.get('wspd', 'N/A')} kt"
+                
+                if data.get("wgst"):
+                    wind += f" (Gust {data.get('wgst')} kt)"
+                
+                weather = data.get("wxString", "No significant weather")
+                
+                flight_cat = data.get("fltCat", "N/A")
+                
+                visibility = f"{data.get('visib', 'N/A')} SM"
+                
+                temperature = f"{data.get('temp', 'N/A')}°C"
+                
+                dewpoint = f"{data.get('dewp', 'N/A')}°C"
+                
+                pressure = f"{data.get('altim', 'N/A')} inHg"
+                
+                st.info(f"""
+                **Station:** {data.get('icaoId', icao)}
+                
+                **Observation Time:** {format_time(data.get('obsTime'))}
+                
+                **Flight Category:** {flight_cat}
+                
+                **Wind:** {wind}
+                
+                **Visibility:** {visibility}
+                
+                **Weather:** {decode_weather(weather)}
+                
+                **Temperature / Dew Point:** {temperature} / {dewpoint}
+                
+                **Altimeter:** {pressure}
+                """)
                 st.subheader("Raw METAR")
                 st.code(data.get("rawOb", "N/A"))
 
